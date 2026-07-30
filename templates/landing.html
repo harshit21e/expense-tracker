@@ -20,6 +20,26 @@
             <a href="{{ url_for('register') }}" class="btn-primary">Start tracking free</a>
             <a href="{{ url_for('login') }}" class="btn-ghost">Sign in</a>
         </div>
+        <button type="button" class="hero-video-link" id="how-it-works-trigger">
+            <span class="hero-video-play-icon">▶</span>
+            See how it works
+        </button>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-num">10K+</span>
+                <span class="hero-stat-label">Active users</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="hero-stat-num">₹2Cr+</span>
+                <span class="hero-stat-label">Tracked monthly</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="hero-stat-num">4.9★</span>
+                <span class="hero-stat-label">User rating</span>
+            </div>
+        </div>
     </div>
     <div class="hero-visual">
         <div class="mock-card">
@@ -58,6 +78,13 @@
                 </div>
             </div>
         </div>
+        <div class="hero-visual-badge">
+            <span class="hero-visual-badge-icon">↓</span>
+            <div class="hero-visual-badge-text">
+                <span class="hero-visual-badge-label">Saved this month</span>
+                <span class="hero-visual-badge-amt">₹3,240</span>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -89,4 +116,53 @@
     </div>
 </section>
 
+<div class="modal-overlay" id="how-it-works-modal">
+    <div class="modal-content">
+        <button type="button" class="modal-close" id="how-it-works-close" aria-label="Close video">&times;</button>
+        <div class="modal-video-wrap">
+            <iframe
+                id="how-it-works-iframe"
+                class="modal-iframe"
+                src=""
+                title="How Spendly works"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    (function () {
+        var trigger = document.getElementById('how-it-works-trigger');
+        var modal = document.getElementById('how-it-works-modal');
+        var iframe = document.getElementById('how-it-works-iframe');
+        var closeBtn = document.getElementById('how-it-works-close');
+        var videoSrc = 'https://www.youtube.com/embed/jNQXAC9IVRw';
+
+        function openModal() {
+            iframe.src = videoSrc + '?autoplay=1';
+            modal.classList.add('is-open');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal() {
+            modal.classList.remove('is-open');
+            iframe.src = '';
+            document.body.classList.remove('modal-open');
+        }
+
+        trigger.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+        });
+    })();
+</script>
 {% endblock %}

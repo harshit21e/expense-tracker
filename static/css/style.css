@@ -174,13 +174,123 @@ a { color: inherit; text-decoration: none; }
     align-items: center;
 }
 
+.hero-video-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1.25rem;
+}
+
+.hero-video-link:hover { color: var(--accent); }
+
+.hero-video-play-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    flex-shrink: 0;
+}
+
+.hero-stats {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.hero-stat-num {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--ink);
+}
+
+.hero-stat-label {
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+}
+
+.hero-stat-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border);
+}
+
 /* ------------------------------------------------------------------ */
 /* Mock card (hero visual)                                             */
 /* ------------------------------------------------------------------ */
 
 .hero-visual {
+    position: relative;
     display: flex;
     justify-content: center;
+}
+
+.hero-visual-badge {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1.1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.hero-visual-badge-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.hero-visual-badge-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.hero-visual-badge-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.hero-visual-badge-amt {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--ink);
 }
 
 .mock-card {
@@ -369,6 +479,54 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ------------------------------------------------------------------ */
+/* Legal pages                                                         */
+/* ------------------------------------------------------------------ */
+
+.legal-section {
+    padding: 4rem 2rem 6rem;
+}
+
+.legal-inner {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.legal-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+}
+
+.legal-updated {
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    margin-bottom: 2rem;
+}
+
+.legal-intro {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+}
+
+.legal-heading {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.legal-body {
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* ------------------------------------------------------------------ */
 /* Auth pages                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -508,6 +666,62 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ------------------------------------------------------------------ */
+/* Modal                                                               */
+/* ------------------------------------------------------------------ */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba(15, 15, 15, 0.7);
+    z-index: 1000;
+}
+
+.modal-overlay.is-open { display: flex; }
+
+body.modal-open { overflow: hidden; }
+
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+}
+
+.modal-close {
+    position: absolute;
+    top: -2.75rem;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+}
+
+.modal-video-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background: #000;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+.modal-iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ------------------------------------------------------------------ */
 /* Responsive                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -519,6 +733,8 @@ a { color: inherit; text-decoration: none; }
 
     .hero-subtitle { max-width: 100%; }
     .hero-actions { justify-content: center; }
+    .hero-video-link { margin-left: auto; margin-right: auto; }
+    .hero-stats { justify-content: center; }
     .hero-visual { display: none; }
 
     .features-inner { grid-template-columns: 1fr; }
