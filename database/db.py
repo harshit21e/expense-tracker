@@ -9,14 +9,16 @@ DB_PATH = os.path.join(
 )
 
 
-def get_db(db_path=DB_PATH):
+def get_db(db_path=None):
+    if db_path is None:
+        db_path = DB_PATH
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
 
-def init_db(db_path=DB_PATH):
+def init_db(db_path=None):
     conn = get_db(db_path)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS users (
@@ -43,7 +45,29 @@ def init_db(db_path=DB_PATH):
     conn.close()
 
 
-def seed_db(db_path=DB_PATH):
+def get_user_by_email(email, db_path=None):
+    conn = get_db(db_path)
+    row = conn.execute(
+        "SELECT * FROM users WHERE email = ?",
+        (email,),
+    ).fetchone()
+    conn.close()
+    return row
+
+
+def create_user(name, email, password_hash, db_path=None):
+    conn = get_db(db_path)
+    cursor = conn.execute(
+        "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
+        (name, email, password_hash),
+    )
+    conn.commit()
+    user_id = cursor.lastrowid
+    conn.close()
+    return user_id
+
+
+def seed_db(db_path=None):
     conn = get_db(db_path)
 
     existing = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]

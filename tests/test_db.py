@@ -2,7 +2,7 @@ import sqlite3
 
 import pytest
 
-from database.db import get_db, init_db, seed_db
+from database.db import create_user, get_db, get_user_by_email, init_db, seed_db
 
 
 @pytest.fixture
@@ -103,3 +103,45 @@ def test_seed_db_is_idempotent(db_path):
     user_count = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
     conn.close()
     assert user_count == 1
+
+
+def test_create_user_inserts_row(db_path):
+    create_user("Alice", "alice@example.com", "hashed-pw", db_path)
+    conn = get_db(db_path)
+    row = conn.execute("SELECT * FROM users WHERE email = ?", ("alice@example.com",)).fetchone()
+    conn.close()
+    assert row["name"] == "Alice"
+    assert row["email"] == "alice@example.com"
+    assert row["password_hash"] == "hashed-pw"
+
+
+def test_create_user_returns_id(db_path):
+    user_id = create_user("Alice", "alice@example.com", "hashed-pw", db_path)
+    conn = get_db(db_path)
+    row = conn.execute("SELECT id FROM users WHERE email = ?", ("alice@example.com",)).fetchone()
+    conn.close()
+    assert user_id == row["id"]
+
+
+def test_create_user_duplicate_email_raises_integrity_error(db_path):
+    create_user("Alice", "alice@example.com", "hashed-pw", db_path)
+    with pytest.raises(sqlite3.IntegrityError):
+        create_user("Bob", "alice@example.com", "hashed-pw", db_path)
+
+
+def test_get_user_by_email_returns_row_when_found(db_path):
+    create_user("Alice", "alice@example.com", "hashed-pw", db_path)
+    row = get_user_by_email("alice@example.com", db_path)
+    assert row is not None
+    assert row["name"] == "Alice"
+
+
+def test_get_user_by_email_returns_none_when_not_found(db_path):
+    row = get_user_by_email("nobody@example.com", db_path)
+    assert row is None
+
+
+def test_get_user_by_email_is_case_sensitive_at_db_layer(db_path):
+    create_user("Alice", "alice@example.com", "hashed-pw", db_path)
+    row = get_user_by_email("ALICE@example.com", db_path)
+    assert row is None
