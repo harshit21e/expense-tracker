@@ -9,6 +9,13 @@ from database.db import create_user, get_user_by_email, init_db, seed_db
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-insecure-secret-key")
 
+CATEGORY_BADGE_CLASSES = {
+    "Food": "badge-cat-1",
+    "Transport": "badge-cat-2",
+    "Utilities": "badge-cat-3",
+    "Entertainment": "badge-cat-4",
+}
+
 
 # ------------------------------------------------------------------ #
 # Routes                                                              #
@@ -66,6 +73,7 @@ def login():
         return render_template("login.html", error="Invalid email or password")
 
     session["user_id"] = user["id"]
+    session["user_name"] = user["name"]
     return redirect(url_for("profile"))
 
 
@@ -80,14 +88,52 @@ def terms():
     return render_template("terms.html")
 
 
+@app.route("/profile")
+def profile():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    user = {
+        "name": "Demo User",
+        "email": "demo@example.com",
+        "initials": "DU",
+        "member_since": "March 2026",
+    }
+
+    summary_stats = {
+        "total_spent": 232.49,
+        "transaction_count": 5,
+        "top_category": "Utilities",
+    }
+
+    transactions = [
+        {"date": "2026-07-20", "description": "Concert ticket", "category": "Entertainment", "amount": 60.00},
+        {"date": "2026-07-15", "description": "Groceries", "category": "Food", "amount": 25.00},
+        {"date": "2026-07-10", "description": "Electricity bill", "category": "Utilities", "amount": 89.99},
+        {"date": "2026-07-03", "description": "Monthly bus pass", "category": "Transport", "amount": 45.00},
+        {"date": "2026-07-01", "description": "Lunch at cafe", "category": "Food", "amount": 12.50},
+    ]
+
+    category_breakdown = [
+        {"category": "Utilities", "total": 89.99, "percent": 39},
+        {"category": "Entertainment", "total": 60.00, "percent": 26},
+        {"category": "Transport", "total": 45.00, "percent": 19},
+        {"category": "Food", "total": 37.50, "percent": 16},
+    ]
+
+    return render_template(
+        "profile.html",
+        user=user,
+        summary_stats=summary_stats,
+        transactions=transactions,
+        category_breakdown=category_breakdown,
+        category_classes=CATEGORY_BADGE_CLASSES,
+    )
+
+
 # ------------------------------------------------------------------ #
 # Placeholder routes — students will implement these                  #
 # ------------------------------------------------------------------ #
-
-@app.route("/profile")
-def profile():
-    return "Profile page — coming in Step 4"
-
 
 @app.route("/expenses/add")
 def add_expense():

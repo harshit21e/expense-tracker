@@ -19,6 +19,17 @@
     --border: #e4e1da;
     --border-soft: #eeebe4;
 
+    --chart-1: var(--accent);
+    --chart-1-light: var(--accent-light);
+    --chart-2: var(--accent-2);
+    --chart-2-light: var(--accent-2-light);
+    --chart-3: #5b7fa6;
+    --chart-3-light: #eaf0f5;
+    --chart-4: #8b5e83;
+    --chart-4-light: #f3ecf2;
+    --chart-5: #9c5b6b;
+    --chart-5-light: #f6e9ec;
+
     --font-display: 'DM Serif Display', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
 
@@ -102,6 +113,7 @@ a { color: inherit; text-decoration: none; }
 
 .nav-links a { color: var(--ink-muted); transition: color 0.2s; }
 .nav-links a:hover { color: var(--ink); }
+.nav-links span { color: var(--ink-muted); }
 
 .nav-cta {
     background: var(--ink) !important;
